@@ -116,6 +116,6 @@ io.on('connection', async () => {
     // })
 })
 
-server.listen(PORT, () => {
-    console.log(`Listening on ${PORT}`)
-})
+server.listen(process.env.PORT, () => {
+    console.log("%s listening at 3000"); // eslint-disable-line no-console
+});
