@@ -1,4 +1,4 @@
-const PORT = 3001;
+require('dotenv').config();
 const http = require('http');
 const express = require('express');
 const app = express();
@@ -9,12 +9,12 @@ const socketIo = require('socket.io')
 const io = socketIo(server);
   
 const needle = require('needle');
-const config = require('dotenv').config();
+// const TOKEN = process.env.TWITTER_BEARER_TOKEN;
 const index = require('./route/index')
-const TOKEN = process.env.TWITTER_BEARER_TOKEN;
+
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // update to match the domain you will make the request from
+    res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
@@ -34,7 +34,7 @@ const rules = [{
 async function getRules(){
     const response = await needle('get', rulesURL, {
         headers:{
-            Authorization: `Bearer ${TOKEN}`
+            Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
         }
     });
     console.log(response.body);
@@ -49,7 +49,7 @@ async function setRules(){
     const response = await needle('post', rulesURL, data, {
         headers:{
             'content-type': 'application/json',
-            Authorization: `Bearer ${TOKEN}`
+            Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
         }
     });
     return response.body
@@ -69,7 +69,7 @@ async function deleteRules(rules) {
     const response = await needle('post', rulesURL, data, {
         headers:{
             'content-type': 'application/json',
-            Authorization: `Bearer ${TOKEN}`
+            Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
         }
     });
     return response.body
@@ -78,7 +78,7 @@ async function deleteRules(rules) {
 function streamTweets(socket) {
     const stream = needle.get(streamURL, {
         headers:{
-            Authorization: `Bearer ${TOKEN}`
+            Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
         }
     })
     stream.on('data', (data) => {
