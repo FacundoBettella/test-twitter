@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect } from 'react';
 import   io   from 'socket.io-client';
-const SERVER = '/';
+const SERVER = 'http://localhost:3001';
 
 var connectionOptions =  {
     "force new connection" : true,
